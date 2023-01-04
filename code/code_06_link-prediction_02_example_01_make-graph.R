@@ -1,5 +1,5 @@
 g <- igraph::make_graph(~ A -- C:D:E -- B -- F -- G:H -- I)
-
+plot(g)
 # Adamic-Adar
 proxfun(g, method="aa", value="edgelist")
 
