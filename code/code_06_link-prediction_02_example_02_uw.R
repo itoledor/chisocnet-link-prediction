@@ -36,14 +36,17 @@ data_prediction
 data_prediction <- data_prediction %>% as_tibble
 data_prediction <- data_prediction %>% mutate(from = V(graph_uw)[from] %>% names)
 data_prediction <- data_prediction %>% mutate(to   = V(graph_uw)[to  ] %>% names)
-data_prediction <- data_prediction %>% right_join(data_test)
-data_prediction <- data_prediction %>% filter(value %>% is.na %>% not)
 data_prediction 
 
 #Evaluation
+data_prediction <- data_prediction %>% right_join(data_test)
+data_prediction <- data_prediction %>% filter(value %>% is.na %>% not)
+
+#Using {pROC}
 roc(data_prediction$new_coauthorship, data_prediction$value, na.rm = TRUE, plot = TRUE)
 auc(roc(data_prediction$new_coauthorship, data_prediction$value, na.rm = TRUE, plot = TRUE))
 
+#Using {PRROC}
 roc <- roc.curve(scores.class0 = data_prediction$value, weights.class0 = data_prediction$new_coauthorship)
 roc$auc
 pr <- pr.curve(scores.class0 = data_prediction$value, weights.class0 = data_prediction$new_coauthorship)
